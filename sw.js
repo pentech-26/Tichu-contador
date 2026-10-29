@@ -1,4 +1,4 @@
-const V="tichupro-v1-8";
+const V="tichupro-v1-9";
 const CORE=["./","index.html","manifest.json","icon-192.png","icon-512.png","icon-maskable-192.png","icon-maskable-512.png","apple-touch-icon.png","icon-32.png","fondo.webp","logo.webp","splash.webp","melodia.mp3"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith("tichupro-")&&x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
