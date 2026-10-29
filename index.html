@@ -36,7 +36,7 @@ a.buy:active{transform:translateY(1px)}
 #splash.out{opacity:0;pointer-events:none}
 #shint{position:absolute;left:50%;bottom:calc(34px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:rgba(251,243,222,.82);color:#4a3328;border:1.5px solid #4a3328;border-radius:4px;box-shadow:inset 0 0 0 3px rgba(251,243,222,.82),inset 0 0 0 4px rgba(74,51,40,.35);padding:12px 28px;font-family:"Protest Revolution","Arial Rounded MT Bold",system-ui,sans-serif;font-size:30px;line-height:1.1;white-space:nowrap;animation:shpulse 1.8s ease-in-out infinite}
 @keyframes shpulse{0%,100%{opacity:1}50%{opacity:.45}}
-#splash{cursor:pointer}
+#shint{cursor:pointer}
 @media (min-aspect-ratio:1/1){#splash{background-size:auto 100%}}
 @media (prefers-reduced-motion:reduce){#splash{transition:none}#shint{animation:none}}
 .team{background:var(--card);border:1px solid var(--line);border-top:8px solid var(--tc);border-radius:14px;padding:2px 12px 12px;margin:14px 0;box-shadow:0 3px 10px rgba(80,30,0,.15);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
@@ -138,7 +138,7 @@ input[type=text],input[type=number]{border:1.5px solid #9c7b5f;border-radius:4px
 #box{border-radius:10px 10px 0 0;border-top:5px double var(--acc)}
 .mtitle::after{content:"";display:block;height:1px;margin:8px auto 0;width:min(70%,220px);background:linear-gradient(90deg,transparent,var(--acc) 30%,var(--acc) 70%,transparent)}
 </style></head>
-<body><div id="topbar"><img src="logo.webp" width="469" height="219" alt="Tichu · Contador"></div><div id="splash" role="button" tabindex="0" aria-label="Bienvenido a Tichu Contador. Toca para empezar"><div id="shint">Toca para empezar</div></div><main id="app"></main>
+<body><div id="topbar"><img src="logo.webp" width="469" height="219" alt="Tichu · Contador"></div><div id="splash" role="img" aria-label="Bienvenido a Tichu Contador"><div id="shint" role="button" tabindex="0">Toca para empezar</div></div><main id="app"></main>
 <div id="modal"><div id="box" role="dialog" aria-modal="true"><h2 id="mt"></h2><div id="opts"></div><button id="mc" style="width:100%">Cancelar</button></div></div>
 <footer class="legal"><p><b>Tichu</b> es un juego de sus respectivos autores, editado en español por <b>Devir</b>. Este contador gratuito ha sido diseñado y creado por <b>PenTech</b> como complemento para facilitar la contabilidad de la partida.</p><p>El nombre del juego y sus reglas pertenecen a sus titulares.</p></footer>
 <script>
@@ -323,14 +323,17 @@ function render(){
   if(S.over&&!S.shown){S.shown=true;save();setTimeout(showFin,200)}}
 render();
 const tb=document.getElementById("topbar");function onScroll(){tb.classList.toggle("mini",(window.scrollY||document.documentElement.scrollTop)>30)}addEventListener("scroll",onScroll,{passive:true});onScroll();
-let AC=null,MG=null,melodyOn=false,entered=false;
-const FQ={d4:293.66,e4:329.63,f4:369.99,a4:440,b4:493.88,d5:587.33,e5:659.25,f5:739.99,a5:880};
-const MEL=[["f4",0,.5],["a4",.5,.5],["b4",1,.5],["e5",1.45,.12],["d5",1.5,1],["b4",2.5,.5],["a4",3,.5],["f4",3.5,.5],["e4",4,.5],["f4",4.5,.5],["a4",5,.5],["b4",5.5,.25],["a4",5.75,.25],["f4",6,.5],["d4",6.5,.5],["d4",7,3],["a4",7,3],["d5",7,2.6],["d5",7.18,.5],["d5",7.36,.5]];
-function nota(f,t,d,v){const o=AC.createOscillator(),g=AC.createGain(),o2=AC.createOscillator(),g2=AC.createGain();o.type="triangle";o.frequency.value=f;o2.type="sine";o2.frequency.value=f*3.99;g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.0008,t+d);g2.gain.setValueAtTime(0.0001,t);g2.gain.linearRampToValueAtTime(v*.35,t+.004);g2.gain.exponentialRampToValueAtTime(.0008,t+.12);o.connect(g);g.connect(MG);o2.connect(g2);g2.connect(MG);o.start(t);o.stop(t+d+.05);o2.start(t);o2.stop(t+.2)}
-function playMelody(){if(melodyOn||!AC||AC.state!=="running")return;melodyOn=true;const t0=AC.currentTime+.15,B=.54;MEL.forEach(([n,b,l])=>nota(FQ[n],t0+b*B,l*B*2.2,.2))}
+let A=null,entered=false,musicOn=false;
+function fadeOut(){if(!A)return;const a=A;let v=a.volume;const t=setInterval(()=>{v-=.09;if(v<=.02){clearInterval(t);a.pause();try{a.currentTime=0}catch(x){}a.volume=.9}else a.volume=v},45)}
 function enter(){if(entered)return;entered=true;const e=document.getElementById("splash");
-try{const C=window.AudioContext||window.webkitAudioContext;if(C){AC=new C();MG=AC.createGain();MG.gain.value=.7;MG.connect(AC.destination);if(AC.state==="running")playMelody();else AC.resume().then(playMelody).catch(()=>{});setTimeout(()=>{try{AC.close()}catch(x){}},9000)}}catch(x){AC=null}
+if(A){if(musicOn)fadeOut();else{try{A.loop=false;const r=A.play();if(r&&r.then)r.then(()=>setTimeout(fadeOut,3500)).catch(()=>{})}catch(x){}}}
 if(e){e.classList.add("out");setTimeout(()=>e.remove(),800)}}
-(function(){const e=document.getElementById("splash");if(!e)return;e.addEventListener("click",enter);e.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();enter()}});new Image().src="splash.webp"})();
+(function(){const e=document.getElementById("splash");if(!e)return;const b=document.getElementById("shint");
+try{A=new Audio("melodia.mp3");A.loop=true;A.preload="auto";A.volume=.9;const r=A.play();if(r&&r.then)r.then(()=>{musicOn=true}).catch(()=>{})}catch(x){A=null}
+e.addEventListener("click",ev=>{if(entered)return;
+if(ev.target.closest&&ev.target.closest("#shint")){enter();return}
+if(!musicOn&&A){try{const r=A.play();if(r&&r.then)r.then(()=>{musicOn=true}).catch(()=>{})}catch(x){}}});
+if(b)b.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();enter()}});
+new Image().src="splash.webp"})();
 if("serviceWorker" in navigator&&location.protocol!=="file:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script></body></html>
