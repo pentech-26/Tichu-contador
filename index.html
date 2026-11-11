@@ -150,27 +150,31 @@ try{const r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);const q=localStorage
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const sg=n=>(n>0?"+":"")+n;
-const KEYH=6186917670965467,LK="tichu-pro-lic",TK="tichu-pro-trial";
-let LICOK=false,TR=null;
+const KEYH=6186917670965467,LK="tichu-pro-lic",TK="tichu-pro-trial",TN="tichu-pro-trial-n",TRIAL=3;
+let LICOK=false,TR=null,TNM=null;
 const h53=(str,seed=0)=>{let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)};
 function lic(){try{if(localStorage.getItem(LK)===String(KEYH))return true}catch(e){}return LICOK}
 function setLic(){LICOK=true;try{localStorage.setItem(LK,String(KEYH))}catch(e){}}
 function getTrial(){try{return localStorage.getItem(TK)||TR}catch(e){return TR}}
 function setTrial(v){TR=v;try{localStorage.setItem(TK,v)}catch(e){}}
+function setN(n){TNM=n;try{localStorage.setItem(TN,String(n))}catch(e){}}
+function getN(){let v=null;try{v=localStorage.getItem(TN)}catch(e){}if(v===null)v=TNM;if(v!==null&&!isNaN(+v))return +v;
+  const t=getTrial(),n=t==="used"||(t==="active"&&S)?1:0;setN(n);return n}
+const quedan=r=>r===1?"queda 1 partida":"quedan "+r+" partidas";
 function gate(){
-  const used=getTrial()==="used",playing=!!S&&getTrial()==="active";
+  const n=getN(),rest=Math.max(0,TRIAL-n),used=rest===0,playing=!!S&&getTrial()==="active";
   $("#app").innerHTML=`<div class="setup gate"><h2 class="mtitle">Acceso a la app</h2>
   <div class="mopt"><label for="lk">Clave de licencia</label><input id="lk" type="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="Introduce tu clave">
   <p id="lerr" class="err" role="alert"></p><button class="pri" id="lgo" style="width:100%">Entrar</button></div>
   <div class="or">o</div>
-  ${playing?'<button id="lback" style="width:100%">Volver a la partida</button>':used?'<a class="buy" href="https://buymeacoffee.com/pentech/e/590024" target="_blank" rel="noopener noreferrer">Comprar la clave</a>':'<button id="ltry" style="width:100%">Pruébame (una partida)</button>'}
-  <p class="hint">${playing?"Con la clave podrás jugar todas las partidas que quieras.":used?"Ya has usado tu prueba gratuita. Compra tu clave y escríbela arriba para seguir jugando.":"Prueba el contador en una partida. Con la clave entras siempre."}</p></div>`;
+  ${playing?'<button id="lback" style="width:100%">Volver a la partida</button>':used?'<a class="buy" href="https://buymeacoffee.com/pentech/e/590024" target="_blank" rel="noopener noreferrer">Comprar la clave</a>':'<button id="ltry" style="width:100%">Pruébame ('+(n?quedan(rest):TRIAL+" partidas")+')</button>'}
+  <p class="hint">${playing?"Con la clave podrás jugar todas las partidas que quieras.":used?"Ya has usado tus "+TRIAL+" partidas de prueba. Compra tu clave y escríbela arriba para seguir jugando.":n?"Te "+quedan(rest)+" de prueba. Con la clave entras siempre.":"Prueba el contador durante "+TRIAL+" partidas. Con la clave entras siempre."}</p></div>`;
   big($("#app"));
   const go=()=>{const v=$("#lk").value.trim().toUpperCase();
     if(h53(v)===KEYH){setLic();window._gate=false;render()}
     else{$("#lerr").textContent="Clave incorrecta. Revísala e inténtalo de nuevo.";$("#lk").select()}};
   $("#lgo").onclick=go;$("#lk").onkeydown=e=>{if(e.key==="Enter")go()};
-  if($("#ltry"))$("#ltry").onclick=()=>{if(used){$("#lerr").textContent="Ya has usado tu prueba gratuita. Introduce la clave para seguir.";return}setTrial("active");render()};
+  if($("#ltry"))$("#ltry").onclick=()=>{if(used){$("#lerr").textContent="Ya has usado tus partidas de prueba. Introduce la clave para seguir.";return}setTrial("active");render()};
   if($("#lback"))$("#lback").onclick=()=>{window._gate=false;render()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));localStorage.setItem(KEY+"-h",JSON.stringify(H))}catch(e){}}
 function mut(fn){H.push(JSON.stringify(S));if(H.length>80)H.shift();fn();save();render()}
@@ -220,7 +224,7 @@ function setup(){
   $("#back").onclick=()=>{window._m=null;menu()};
   document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{window._t=+b.dataset.t;setup()});
   document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{window._r=+b.dataset.r;setup()});
-  $("#go").onclick=()=>{
+  $("#go").onclick=()=>{if(!lic())setN(getN()+1);
     const names=[...document.querySelectorAll("[data-n]")].sort((a,b)=>a.dataset.n-b.dataset.n).map((e,i)=>e.value.trim()||"Jugador "+(i+1));
     const tn=m==="3"?["",""]:[($("#ta").value.trim()||"Equipo A"),($("#tb").value.trim()||"Equipo B")];
     S={mode:m,names,tn,target:tg,nr,hist:[],over:false,shown:false};H=[];save();render()}}
@@ -261,7 +265,7 @@ function apply(){
   mut(()=>{S.hist.push({d,tags});const t=totals();
     if(m==="3")S.over=S.hist.length>=S.nr;
     else{const mx=Math.max(...t);if(mx>=S.target&&t[0]!==t[1])S.over=true}})}
-async function reset(){const r=await pick("¿Empezar una partida nueva? Se borra la actual"+(lic()?".":" y terminará tu prueba gratuita."),[{l:"Sí, nueva partida",v:1}]);if(r){if(!lic())setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()}}
+async function reset(){const r=await pick("¿Empezar una partida nueva? Se borra la actual"+(lic()?".":getN()>=TRIAL?" y terminará tu prueba gratuita.":". Te "+quedan(TRIAL-getN())+" de prueba."),[{l:"Sí, nueva partida",v:1}]);if(r){if(!lic()&&getN()>=TRIAL)setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()}}
 function confetti(){
   if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
   const c=document.createElement("canvas");c.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40";
@@ -294,7 +298,7 @@ function showFin(){
   <div class="row"><button id="fv">👀 Ver partida</button><button class="pri" id="fn">Nueva partida</button></div></div>`;
   document.body.appendChild(d);big(d);
   d.querySelector("#fv").onclick=()=>d.remove();
-  d.querySelector("#fn").onclick=()=>{d.remove();if(!lic())setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()};
+  d.querySelector("#fn").onclick=()=>{d.remove();if(!lic()&&getN()>=TRIAL)setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()};
   confetti()}
 function render(){
   if(!lic()&&(window._gate||getTrial()!=="active"))return gate();
