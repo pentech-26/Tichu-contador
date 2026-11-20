@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Tichu · Contador</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -14,7 +14,7 @@
 <style>
 :root{--bg:#fbf3de;--card:rgba(255,252,243,.84);--line:#d3b98a;--acc:#a63d2c;--onacc:#fff;--warn:#b3261e;--gold:#e3a72f;--ta:#b8432f;--tb:#2e7d8c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
-html{min-height:100%;background:#f6e6bf;scroll-padding-top:env(safe-area-inset-top,0px)}
+html{min-height:100%;background:#f6e6bf;touch-action:manipulation;-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 *{font-synthesis:none}
 a.buy{display:block;box-sizing:border-box;width:100%;min-height:44px;padding:16px 12px;text-align:center;text-decoration:none;font-size:22px;font-weight:800;line-height:1.2;letter-spacing:.5px;background:#a8382a;color:#fff4dc;border:1.5px solid #5a1d14;border-radius:5px;box-shadow:inset 0 0 0 2px #a8382a,inset 0 0 0 3px rgba(242,201,112,.85),0 2px 0 #5a1d14}
 a.buy:active{transform:translateY(1px)}
@@ -131,6 +131,7 @@ input[type=text],input[type=number]{font:inherit;padding:10px;border:1px solid v
 button,.tools button,#opts button,.fcard .row button,.crow button.c1{border:1.5px solid #7a5a45;border-radius:5px;box-shadow:inset 0 0 0 2px rgba(255,250,240,.95),inset 0 0 0 3px rgba(122,90,69,.4),0 2px 0 rgba(90,59,46,.25)}
 button.pri,.seg button.on,.firsts button.on,.fcard .row button.pri,.crow button.c2{background:#a8382a;color:#fff4dc;border:1.5px solid #5a1d14;box-shadow:inset 0 0 0 2px #a8382a,inset 0 0 0 3px rgba(242,201,112,.85),0 2px 0 #5a1d14}
 button.pri.mbtn{width:100%;font-size:25px;padding:18px 12px;letter-spacing:.5px;line-height:1.15}
+button.pri.mbtn.bloq{font-size:clamp(19px,5.6vw,25px);padding:18px 8px;white-space:nowrap;letter-spacing:0}
 button:active{transform:translateY(1px)}
 input[type=text],input[type=number]{border:1.5px solid #9c7b5f;border-radius:4px;background:#fffaf0}
 .sub{border-radius:4px;background:#a8382a;box-shadow:inset 0 0 0 2px #a8382a,inset 0 0 0 3px rgba(242,201,112,.85),0 2px 6px rgba(80,30,0,.25);padding:6px 18px}
@@ -138,10 +139,58 @@ input[type=text],input[type=number]{border:1.5px solid #9c7b5f;border-radius:4px
 .fcard{border:6px double var(--acc);border-radius:6px}
 #box{border-radius:10px 10px 0 0;border-top:5px double var(--acc)}
 .mtitle::after{content:"";display:block;height:1px;margin:8px auto 0;width:min(70%,220px);background:linear-gradient(90deg,transparent,var(--acc) 30%,var(--acc) 70%,transparent)}
+
+/* ===== Versión gratis / completa ===== */
+:root{--gris:#857868}
+.bloq,button.pri.bloq,button.pri.mbtn.bloq{background:rgba(255,252,243,.94);color:var(--gris);border:1.5px solid #7a5a45;box-shadow:inset 0 0 0 2px rgba(255,250,240,.95),inset 0 0 0 3px rgba(122,90,69,.4),0 2px 0 rgba(90,59,46,.25);font-weight:800}
+.bloq .ic,.cand .ic{filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));font-size:1.05em;margin-right:.3em}
+button:disabled.bloq{opacity:1}
+.cand{display:block;width:100%;text-align:center;color:var(--gris);font-weight:800}
+.lnk{background:none;border:0;box-shadow:none;min-height:44px;padding:8px 12px;color:var(--acc);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.lnk:active{transform:none}
+.prolist{text-align:left;margin:10px 0 12px;padding:0 0 0 4px;list-style:none}
+.prolist li{padding:5px 0;border-bottom:1px solid var(--line)}
+.prolist li:last-child{border:0}
+.prolist li::before{content:"✓";color:var(--acc);font-weight:800;margin-right:8px}
+.gratis{font-size:15px;margin:0 0 4px}
+.pro input{text-align:center;letter-spacing:1px;margin:8px 0 4px}
+.pro .row{margin-top:8px}
+/* ===== Archivo de partidas ===== */
+.arch{text-align:left}
+.arch .ft{text-align:center;color:var(--acc)}
+.ficha{background:#fffaf0;border:1.5px solid var(--ink);border-radius:4px;padding:10px 12px;margin:10px 0}
+.ficha .fh{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:#5b4a3c}
+.ficha .fg{font-size:18px;margin:4px 0 2px}
+.ficha .fg b{color:var(--acc)}
+.ficha .fb{display:flex;gap:6px;margin-top:8px}
+.ficha .fb button{flex:1;min-height:40px;padding:6px 8px}
+.ficha .fd{margin-top:8px;font-size:15px}
+.ficha .fd div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)}
+.ficha .fd div:last-child{border:0}
+.ficha .fd small{display:block;color:#5b4a3c}
+.masarch{display:block;width:100%;margin:10px 0;text-align:center}
+/* ===== Aviso legal ===== */
+.legal{border-top:0;padding-top:4px}
+.legal p{margin:0 0 8px;font-weight:700;text-shadow:0 0 6px rgba(255,250,240,.9)}
+.btn-legal{min-height:40px;padding:6px 20px;border-radius:99px;font-size:15px;font-weight:800;color:var(--acc);background:rgba(255,252,243,.94)}
+.legal .ver{margin:8px 0 0;opacity:1;font-weight:700}
+.aviso{text-align:left;font-size:15px;line-height:1.5}
+.aviso h3{font-size:16px;margin:14px 0 4px;color:var(--acc)}
+.aviso p{margin:0 0 6px}
+/* ===== Solo vertical ===== */
+#gira{position:fixed;inset:0;z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;background:#fbf3de;color:var(--ink)}
+#gira b{font-family:"Protest Revolution","Arial Rounded MT Bold",system-ui,sans-serif;font-weight:400;font-size:34px;color:var(--acc)}
+#gira .movil{width:44px;height:76px;border:4px solid var(--ink);border-radius:9px;position:relative;animation:girar 2.4s ease-in-out infinite}
+#gira .movil::after{content:"";position:absolute;left:50%;bottom:5px;width:10px;height:3px;margin-left:-5px;border-radius:2px;background:var(--ink)}
+#gira .flecha{font-size:28px;line-height:1;color:var(--acc)}
+@keyframes girar{0%,15%{transform:rotate(90deg)}55%,100%{transform:rotate(0)}}
+@media (orientation:landscape) and (max-height:520px){#gira{display:flex}}
+@media (prefers-reduced-motion:reduce){#gira .movil{animation:none}}
 </style></head>
 <body><div id="topbar"><img src="logo.webp" width="469" height="219" alt="Tichu · Contador"></div><div id="splash" role="img" aria-label="Bienvenido a Tichu Contador"><div id="shint" role="button" tabindex="0">Toca para empezar</div></div><main id="app"></main>
 <div id="modal"><div id="box" role="dialog" aria-modal="true"><h2 id="mt"></h2><div id="opts"></div><button id="mc" style="width:100%">Cancelar</button></div></div>
-<footer class="legal"><p><b>Tichu</b> es un juego de sus respectivos autores, editado en español por <b>Devir</b>. Este contador ha sido diseñado y creado por <b>PenTech</b> como complemento para facilitar la contabilidad de la partida.</p><p>El nombre del juego y sus reglas pertenecen a sus titulares.</p><p class="ver">v1.0</p></footer>
+<footer class="legal"><p>Contador no oficial · © 2026 PenTech</p><button class="btn-legal" id="btnLegal">Aviso legal</button><p class="ver" id="verPie"></p></footer>
+<div id="gira" role="alert"><div class="flecha" aria-hidden="true">↺</div><div class="movil" aria-hidden="true"></div><b>Gira el móvil</b><span>Tichu se usa en vertical</span></div>
 <script>
 const KEY="tichu-pro-v1",COLS=["#b8432f","#2e7d8c"],PC=["#b8432f","#2e7d8c","#6f9a4a","#e3a72f"];
 const BRAND='';
@@ -150,39 +199,85 @@ try{const r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);const q=localStorage
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const sg=n=>(n>0?"+":"")+n;
-const KEYH=6186917670965467,LK="tichu-pro-lic",TK="tichu-pro-trial",TN="tichu-pro-trial-n",TRIAL=3;
-let LICOK=false,TR=null,TNM=null;
+const VERSION="v1.1",BUY="https://buymeacoffee.com/pentech/e/590024",ARK="tichu-historial-v1",ARCH_GRATIS=3,ARCH_MAX=200;
+const KEYH=6186917670965467,LK="tichu-pro-lic";
+const CANDADO="🔒";
+let LICOK=false;
 const h53=(str,seed=0)=>{let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)};
 function lic(){try{if(localStorage.getItem(LK)===String(KEYH))return true}catch(e){}return LICOK}
 function setLic(){LICOK=true;try{localStorage.setItem(LK,String(KEYH))}catch(e){}}
-function getTrial(){try{return localStorage.getItem(TK)||TR}catch(e){return TR}}
-function setTrial(v){TR=v;try{localStorage.setItem(TK,v)}catch(e){}}
-function setN(n){TNM=n;try{localStorage.setItem(TN,String(n))}catch(e){}}
-function getN(){let v=null;try{v=localStorage.getItem(TN)}catch(e){}if(v===null)v=TNM;if(v!==null&&!isNaN(+v))return +v;
-  const t=getTrial(),n=t==="used"||(t==="active"&&S)?1:0;setN(n);return n}
-const quedan=r=>r===1?"queda 1 partida":"quedan "+r+" partidas";
-function gate(){
-  const n=getN(),rest=Math.max(0,TRIAL-n),used=rest===0,playing=!!S&&getTrial()==="active";
-  $("#app").innerHTML=`<div class="setup gate"><h2 class="mtitle">Acceso a la app</h2>
-  <div class="mopt"><label for="lk">Clave de licencia</label><input id="lk" type="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="Introduce tu clave">
-  <p id="lerr" class="err" role="alert"></p><button class="pri" id="lgo" style="width:100%">Entrar</button></div>
-  <div class="or">o</div>
-  ${playing?'<button id="lback" style="width:100%">Volver a la partida</button>':used?'<a class="buy" href="https://buymeacoffee.com/pentech/e/590024" target="_blank" rel="noopener noreferrer">Comprar la clave</a>':'<button id="ltry" style="width:100%">Pruébame ('+(n?quedan(rest):TRIAL+" partidas")+')</button>'}
-  <p class="hint">${playing?"Con la clave podrás jugar todas las partidas que quieras.":used?"Ya has usado tus "+TRIAL+" partidas de prueba. Compra tu clave y escríbela arriba para seguir jugando.":n?"Te "+quedan(rest)+" de prueba. Con la clave entras siempre.":"Prueba el contador durante "+TRIAL+" partidas. Con la clave entras siempre."}</p></div>`;
-  big($("#app"));
-  const go=()=>{const v=$("#lk").value.trim().toUpperCase();
-    if(h53(v)===KEYH){setLic();window._gate=false;render()}
-    else{$("#lerr").textContent="Clave incorrecta. Revísala e inténtalo de nuevo.";$("#lk").select()}};
-  $("#lgo").onclick=go;$("#lk").onkeydown=e=>{if(e.key==="Enter")go()};
-  if($("#ltry"))$("#ltry").onclick=()=>{if(used){$("#lerr").textContent="Ya has usado tus partidas de prueba. Introduce la clave para seguir.";return}setTrial("active");render()};
-  if($("#lback"))$("#lback").onclick=()=>{window._gate=false;render()}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));localStorage.setItem(KEY+"-h",JSON.stringify(H))}catch(e){}}
+const proMode=m=>m==="3"||m==="6";
+function capa(cls,html){const d=document.createElement("div");d.className="fin "+cls;d.innerHTML=html;document.body.appendChild(d);big(d);
+  d.addEventListener("click",ev=>{if(ev.target===d)d.remove()});return d}
+function abrirPro(){
+  document.querySelectorAll(".fin.pro-o").forEach(x=>x.remove());
+  if(lic()){const d=capa("pro-o",`<div class="fcard pro" role="dialog" aria-modal="true"><h2 class="ft">✓ Versión completa</h2><p>Tienes activada la versión completa. ¡Gracias por apoyar a PenTech!</p><div class="row"><button class="pri" id="pc">Cerrar</button></div></div>`);
+    d.querySelector("#pc").onclick=()=>d.remove();return}
+  const d=capa("pro-o",`<div class="fcard pro" role="dialog" aria-modal="true"><h2 class="ft">Versión completa</h2>
+  <p class="gratis">La versión gratis incluye Tichu clásico de 4 jugadores. Con la clave se desbloquea:</p>
+  <ul class="prolist"><li>Trichu · 3 jugadores</li><li>Tianjin · 6 jugadores</li><li>Deshacer manos</li><li>Historial de manos de la partida</li><li>Archivo de partidas completo</li></ul>
+  <a class="buy" href="${BUY}" target="_blank" rel="noopener noreferrer">Comprar la clave</a>
+  <label for="pk" style="display:block;margin-top:14px;font-weight:700;text-align:center">¿Ya tienes la clave?</label>
+  <input id="pk" type="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="Escribe tu clave">
+  <p class="err" id="perr" role="alert"></p>
+  <div class="row"><button id="pc">Ahora no</button><button class="pri" id="pgo">Activar clave</button></div></div>`);
+  const go=()=>{const v=d.querySelector("#pk").value.trim().toUpperCase().replace(/\s+/g,"");
+    if(h53(v)===KEYH||h53(d.querySelector("#pk").value.trim().toUpperCase())===KEYH){setLic();d.remove();render();if(document.querySelector(".fin.arch-o"))abrirArchivo();confetti()}
+    else{d.querySelector("#perr").textContent="Clave incorrecta. Revísala e inténtalo de nuevo.";d.querySelector("#pk").select()}};
+  d.querySelector("#pgo").onclick=go;d.querySelector("#pk").onkeydown=e=>{if(e.key==="Enter")go()};
+  d.querySelector("#pc").onclick=()=>d.remove()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));localStorage.setItem(KEY+"-h",JSON.stringify(H))}catch(e){}syncArch()}
+function leeArch(){try{const a=JSON.parse(localStorage.getItem(ARK)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function guardaArch(a){try{localStorage.setItem(ARK,JSON.stringify(a))}catch(e){}}
+function syncArch(){if(!S)return;if(!S.gid)S.gid=Date.now()+"-"+Math.random().toString(36).slice(2,7);
+  let a=leeArch();const i=a.findIndex(x=>x.id===S.gid);
+  if(!S.over){if(i>=0){a.splice(i,1);guardaArch(a)}return}
+  const e=ents(),t=totals(),old=i>=0?a[i]:null;
+  const f={id:S.gid,fecha:old?old.fecha:Date.now(),mode:S.mode,target:S.target,nr:S.nr,n:S.hist.length,e:e.slice(),t,
+    mem:S.mode==="3"?null:[0,1].map(k=>S.names.filter((_,j)=>j%2===k))};
+  if(i>=0)a[i]=f;else a.unshift(f);
+  a.sort((x,y)=>y.fecha-x.fecha);if(a.length>ARCH_MAX)a.length=ARCH_MAX;guardaArch(a)}
+const MODO_TXT={"4":"Tichu · 4 jugadores","3":"Trichu · 3 jugadores","6":"Tianjin · 6 jugadores"};
+function abrirArchivo(){
+  document.querySelectorAll(".fin.arch-o").forEach(x=>x.remove());
+  const d=capa("arch-o",'<div class="fcard arch" role="dialog" aria-modal="true"></div>');const box=d.firstChild;const abiertas=new Set();
+  const pinta=()=>{
+    const a=leeArch(),L=lic(),vis=L?a:a.slice(0,ARCH_GRATIS),ocultas=a.length-vis.length;
+    box.innerHTML=`<h2 class="ft">Archivo de partidas</h2>
+    ${a.length?"":'<p style="text-align:center">Todavía no hay partidas terminadas. Se guardan solas al acabar cada partida.</p>'}
+    ${vis.map(f=>{const r=f.e.map((n,i)=>({n,i,v:f.t[i]})).sort((x,y)=>y.v-x.v),mx=r[0].v,ws=r.filter(x=>x.v===mx).map(x=>esc(x.n)).join(" y ");
+      const fe=new Date(f.fecha),fs=fe.toLocaleDateString("es-ES",{day:"numeric",month:"short",year:"numeric"})+" · "+fe.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
+      const det=abiertas.has(f.id)?`<div class="fd">${r.map((x,k)=>`<div><span>${["🥇","🥈","🥉"][k]||(k+1)+"."} ${esc(x.n)}${f.mem&&f.mem[x.i]?`<small>${f.mem[x.i].map(esc).join(" · ")}</small>`:""}</span><b>${x.v}</b></div>`).join("")}<small style="margin-top:6px">${f.n} manos${f.mode==="3"?"":" · objetivo "+f.target}</small></div>`:"";
+      return `<div class="ficha"><div class="fh"><span>${fs}</span><span>${MODO_TXT[f.mode]||""}</span></div><div class="fg">Gana <b>${ws}</b> · ${mx}</div>${det}
+      <div class="fb"><button data-ver="${f.id}">${abiertas.has(f.id)?"Ocultar":"Ver"}</button><button data-del="${f.id}">Borrar</button></div></div>`}).join("")}
+    ${ocultas>0?`<button class="bloq masarch" id="amas">${CANDADO} Y ${ocultas} ${ocultas===1?"partida más guardada":"partidas más guardadas"}. Se ven en la versión completa.</button>`:""}
+    <div class="row">${L&&a.length?'<button id="avac">Vaciar archivo</button>':""}<button class="pri" id="acer">Cerrar</button></div>`;
+    big(box);
+    box.querySelectorAll("[data-ver]").forEach(b=>b.onclick=()=>{const id=b.dataset.ver;abiertas.has(id)?abiertas.delete(id):abiertas.add(id);pinta()});
+    box.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{const r=await pick("¿Borrar esta partida del archivo?",[{l:"Sí, borrar",v:1}]);if(r){guardaArch(leeArch().filter(x=>x.id!==b.dataset.del));pinta()}});
+    if(box.querySelector("#amas"))box.querySelector("#amas").onclick=abrirPro;
+    if(box.querySelector("#avac"))box.querySelector("#avac").onclick=async()=>{const r=await pick("¿Vaciar todo el archivo? Se borran todas las partidas guardadas.",[{l:"Sí, vaciar",v:1}]);if(r){guardaArch([]);pinta()}};
+    box.querySelector("#acer").onclick=()=>d.remove()};
+  pinta()}
+function abrirLegal(){
+  document.querySelectorAll(".fin.legal-o").forEach(x=>x.remove());
+  const d=capa("legal-o",`<div class="fcard aviso" role="dialog" aria-modal="true" aria-labelledby="lt"><h2 class="ft" id="lt" style="text-align:center">Aviso legal</h2>
+  <h3>Sobre el juego</h3><p><b>Tichu</b> es un juego de cartas diseñado por Urs Hostettler, publicado originalmente por Fata Morgana Spiele y editado en español por <b>Devir</b>. El nombre del juego, sus marcas, sus componentes y sus ilustraciones pertenecen a sus propietarios.</p>
+  <h3>Herramienta no oficial</h3><p>Este contador lo ha creado <b>PenTech</b> de forma independiente para facilitar la cuenta de los puntos. No está afiliado, patrocinado ni aprobado por el autor ni por las editoriales del juego, y no sustituye al reglamento. Para jugar necesitas un ejemplar del juego.</p>
+  <h3>Versión gratis y versión completa</h3><p>La versión gratis, sin anuncios ni límite de partidas, permite jugar a Tichu clásico de 4 jugadores. La versión completa añade Trichu (3 jugadores), Tianjin (6 jugadores), deshacer, el historial de manos y el archivo de partidas completo. Se desbloquea con una clave que se compra en la tienda de PenTech en Buy Me a Coffee, con sus propias condiciones. La clave da acceso a la versión completa de la app, no al juego.</p>
+  <p>El diseño, los iconos, las ilustraciones de la app y el código son de PenTech. No está permitido copiarlos, venderlos ni distribuirlos.</p>
+  <h3>Privacidad</h3><p>La app no pide registro ni recoge datos personales, y no usa cookies, publicidad ni analítica. Los nombres, las partidas, el archivo y la clave activada se guardan solo en tu dispositivo. Solo se usa internet para descargar la app y las tipografías de Google Fonts.</p>
+  <h3>Créditos</h3><p>© 2026 PenTech. Tipografías Protest Revolution y Nunito, con licencia SIL Open Font License 1.1. Sonido de entrada: «Breezes Through the Golden Bamboo», de kaazoom.</p>
+  <h3>Contacto</h3><p>Instagram: <b>@pentech_26</b></p>
+  <p style="text-align:center;margin-top:14px;font-weight:700">Contador de Tichu · ${VERSION}</p>
+  <div class="row"><button class="pri" id="lc">Cerrar</button></div></div>`);
+  d.querySelector("#lc").onclick=()=>d.remove()}
 function mut(fn){H.push(JSON.stringify(S));if(H.length>80)H.shift();fn();save();render()}
 function undo(){if(!H.length)return;S=JSON.parse(H.pop());save();render()}
 function big(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),ns=[];while(w.nextNode())ns.push(w.currentNode);
-  const E=/(\p{Extended_Pictographic}\uFE0F?)/u;
+  const E=/((?![©®™])\p{Extended_Pictographic}\uFE0F?)/u;
   ns.forEach(n=>{const t=n.nodeValue;if(!E.test(t))return;const f=document.createDocumentFragment();
-    t.split(E).forEach(p=>{if(p&&/^\p{Extended_Pictographic}/u.test(p)){const s=document.createElement("span");s.className="ic";s.textContent=p;f.appendChild(s)}else if(p)f.appendChild(document.createTextNode(p))});
+    t.split(E).forEach(p=>{if(p&&/^(?![©®™])\p{Extended_Pictographic}/u.test(p)){const s=document.createElement("span");s.className="ic";s.textContent=p;f.appendChild(s)}else if(p)f.appendChild(document.createTextNode(p))});
     n.parentNode.replaceChild(f,n)})}
 function pick(title,opts){return new Promise(res=>{
   $("#mt").textContent=title;const o=$("#opts");o.innerHTML="";
@@ -207,13 +302,17 @@ const MODES=[["4","<span class=\"pr\">Tichu</span> · 4 jugadores","Dos equipos 
 ["3","<span class=\"pr\">Trichu</span> · 3 jugadores","Trichu (Tichu de Nankín): cada jugador puntúa por su cuenta. El que reparte juega con un compañero virtual, «la Mesa»."],
 ["6","<span class=\"pr\">Tianjin</span> · 6 jugadores","Tichu de Tianjin: dos equipos de 3, sentados alternados: J1, J3 y J5 contra J2, J4 y J6. La triple victoria vale 300."]];
 function menu(){
+  const L=lic();
   $("#app").innerHTML=`<div class="setup">  <h2 class="mtitle">Elige el modo de juego</h2>
-  ${MODES.map(([k,l,d])=>`<div class="mopt"><button class="pri mbtn" data-go="${k}">${l}</button><p class="hint">${d}</p></div>`).join("")}</div>`;
+  ${MODES.map(([k,l,d])=>{const b=!L&&proMode(k);return`<div class="mopt"><button class="pri mbtn${b?" bloq":""}" data-go="${k}">${b?CANDADO+" ":""}${l}</button><p class="hint">${d}</p></div>`}).join("")}
+  <button id="march" style="width:100%;margin-top:4px">Archivo de partidas</button>
+  <p style="text-align:center;margin:10px 0 0"><button class="lnk" id="mpro">${L?"✓ Versión completa":"🔓 Versión completa"}</button></p></div>`;
   big($("#app"));
-  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{window._m=b.dataset.go;setup();window.scrollTo(0,0)});
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const k=b.dataset.go;if(!lic()&&proMode(k)){abrirPro();return}window._m=k;setup();window.scrollTo(0,0)});
+  $("#march").onclick=abrirArchivo;$("#mpro").onclick=abrirPro;
 }
 function setup(){
-  const m=window._m||"4",N={"4":4,"3":3,"6":6}[m],tg=window._t||1000,nr=window._r||6;
+  let m=window._m||"4";if(!lic()&&proMode(m))m=window._m="4";const N={"4":4,"3":3,"6":6}[m],tg=window._t||1000,nr=window._r||6;
   const pf=i=>`<label>Jugador ${i+1}</label><input type="text" data-n="${i}" placeholder="Jugador ${i+1}">`;
   $("#app").innerHTML=`<div class="setup">${BRAND}  <div class="modehead"><button id="back">← Cambiar modo</button><h2>${MODES.find(x=>x[0]===m)[1]}</h2></div>
   ${m==="3"?`<label>Número de rondas</label><div class="seg">${[3,6,9,12].map(k=>`<button data-r="${k}" class="${k==nr?"on":""}">${k}</button>`).join("")}</div><p class="hint">Tiene que ser múltiplo de 3 para que todos jueguen igual de veces con la Mesa.</p>`
@@ -224,10 +323,10 @@ function setup(){
   $("#back").onclick=()=>{window._m=null;menu()};
   document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{window._t=+b.dataset.t;setup()});
   document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{window._r=+b.dataset.r;setup()});
-  $("#go").onclick=()=>{if(!lic())setN(getN()+1);
+  $("#go").onclick=()=>{
     const names=[...document.querySelectorAll("[data-n]")].sort((a,b)=>a.dataset.n-b.dataset.n).map((e,i)=>e.value.trim()||"Jugador "+(i+1));
     const tn=m==="3"?["",""]:[($("#ta").value.trim()||"Equipo A"),($("#tb").value.trim()||"Equipo B")];
-    S={mode:m,names,tn,target:tg,nr,hist:[],over:false,shown:false};H=[];save();render()}}
+    S={mode:m,names,tn,target:tg,nr,hist:[],over:false,shown:false,gid:Date.now()+"-"+Math.random().toString(36).slice(2,7)};H=[];save();render()}}
 function openForm(){
   F={kind:"n",x:50,calls:Array(callers().length).fill(0),first:null};renderForm()}
 function renderForm(){
@@ -265,7 +364,7 @@ function apply(){
   mut(()=>{S.hist.push({d,tags});const t=totals();
     if(m==="3")S.over=S.hist.length>=S.nr;
     else{const mx=Math.max(...t);if(mx>=S.target&&t[0]!==t[1])S.over=true}})}
-async function reset(){const r=await pick("¿Empezar una partida nueva? Se borra la actual"+(lic()?".":getN()>=TRIAL?" y terminará tu prueba gratuita.":". Te "+quedan(TRIAL-getN())+" de prueba."),[{l:"Sí, nueva partida",v:1}]);if(r){if(!lic()&&getN()>=TRIAL)setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()}}
+async function reset(){const r=await pick(S&&S.over?"¿Empezar una partida nueva? La terminada ya está en el archivo.":"¿Empezar una partida nueva? Se borra la actual.",[{l:"Sí, nueva partida",v:1}]);if(r){S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()}}
 function confetti(){
   if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
   const c=document.createElement("canvas");c.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40";
@@ -295,13 +394,12 @@ function showFin(){
   d.innerHTML=`<div class="fcard" role="dialog" aria-modal="true"><div class="tro">🏆</div><h2 class="ft">¡Fin de partida!</h2>
   <p class="fw">Gana <b>${win}</b></p>${miembros}<p>con ${mx} puntos</p>${ws.length>1?"<p>¡Empate!</p>":""}
   <div class="rank">${rank.map((r,k)=>`<div><span><i class="dot" style="background:${S.mode==="3"?PC[r.i]:COLS[r.i]}"></i>${["🥇","🥈","🥉"][k]||(k+1)+"."} ${esc(r.n)}</span><b>${r.v}</b></div>`).join("")}</div>
-  <div class="row"><button id="fv">👀 Ver partida</button><button class="pri" id="fn">Nueva partida</button></div></div>`;
+  <div class="row"><button id="fv">👀 Ver partida</button><button id="fa">Archivo</button><button class="pri" id="fn">Nueva partida</button></div></div>`;
   document.body.appendChild(d);big(d);
-  d.querySelector("#fv").onclick=()=>d.remove();
-  d.querySelector("#fn").onclick=()=>{d.remove();if(!lic()&&getN()>=TRIAL)setTrial("used");S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()};
+  d.querySelector("#fv").onclick=()=>d.remove();d.querySelector("#fa").onclick=abrirArchivo;
+  d.querySelector("#fn").onclick=()=>{d.remove();S=null;H=[];window._m=null;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-h")}catch(e){}render()};
   confetti()}
 function render(){
-  if(!lic()&&(window._gate||getTrial()!=="active"))return gate();
   if(!S)return window._m?setup():menu();
   const m=S.mode,e=ents(),t=totals(),mx=Math.max(...t),n=S.hist.length;
   const sub=m==="3"?`Mano ${Math.min(n+1,S.nr)} de ${S.nr}`:`Mano nº ${n+1}`;
@@ -315,18 +413,23 @@ function render(){
   const hist=[...S.hist].map((h,k)=>({h,k})).reverse().map(({h,k})=>`<div><b>Mano ${k+1}:</b> ${e.map((nm,i)=>esc(nm)+" <span class='"+(h.d[i]<0?"neg":"pos")+"'>"+sg(h.d[i])+"</span>").join(" · ")}${h.tags.length?`<small>${h.tags.map(esc).join(" · ")}</small>`:""}</div>`).join("");
   const rank=m==="3"?e.map((nm,i)=>({nm,i,v:t[i]})).sort((a,b)=>b.v-a.v):null;
   $("#app").innerHTML=`<header>${BRAND}<div class="sub">${sub}</div>${m==="3"&&!S.over?`<div class="hint">Reparte <b>${esc(S.names[dealer()])}</b> · juega con la Mesa</div>`:""}
-  <div class="tools"><button id="u" ${H.length?"":"disabled"}>Deshacer</button><button id="rs">Nueva partida</button></div></header>
+  <div class="tools">${lic()?`<button id="u" ${H.length?"":"disabled"}>Deshacer</button>`:`<button id="u" class="bloq">${CANDADO} Deshacer</button>`}<button id="rs">Nueva partida</button></div></header>
   ${S.over?`<div class="paper"><b style="font-size:20px">🏁 Fin de partida</b><button class="pri" id="vr" style="width:100%;margin-top:8px">🏆 Ver resultados</button></div>`
   :`<div class="paper"><button class="pri" id="ap" style="width:100%;font-size:19px">Apuntar mano</button>${m!=="3"&&Math.max(...t)>=S.target&&t[0]===t[1]?`<p style="margin:8px 0 0;font-weight:700;color:var(--warn)">¡Empate a ${t[0]}! Se sigue jugando hasta desempatar.</p>`:""}</div>`}
   <div class="grid">${cards}</div>
   ${rank?`<section><h2>🏆 Clasificación</h2><div class="rank">${rank.map((r,k)=>`<div><span><i class="dot" style="background:${PC[r.i]}"></i>${["🥇","🥈","🥉"][k]||(k+1)+"."} ${esc(r.nm)}</span><b>${r.v}</b></div>`).join("")}</div></section>`:""}
-  <section><h2>📜 Historial</h2><div class="hist">${hist||"<div>Todavía no hay manos apuntadas.</div>"}</div></section>`;
+  <section><h2>📜 Historial</h2><div class="hist">${lic()?(hist||"<div>Todavía no hay manos apuntadas.</div>"):`<div><button class="bloq cand" id="hpro">${CANDADO} Historial de manos · versión completa</button></div>`}</div></section>`;
   big($("#app"));
-  $("#u").onclick=undo;$("#rs").onclick=reset;if($("#ap"))$("#ap").onclick=openForm;if($("#vr"))$("#vr").onclick=showFin;
+  $("#u").onclick=lic()?undo:abrirPro;$("#rs").onclick=reset;if($("#hpro"))$("#hpro").onclick=abrirPro;if($("#ap"))$("#ap").onclick=openForm;if($("#vr"))$("#vr").onclick=showFin;
   document.querySelectorAll("input.name").forEach(el=>el.onchange=()=>{const i=+el.dataset.e,v=el.value.trim();
     if(m==="3")S.names[i]=v||"Jugador "+(i+1);else S.tn[i]=v||"Equipo "+(i?"B":"A");save();render()});
   if(S.over&&!S.shown){S.shown=true;save();setTimeout(showFin,200)}}
+if(S&&!S.gid){S.gid=Date.now()+"-"+Math.random().toString(36).slice(2,7);save()}
 render();
+$("#btnLegal").onclick=abrirLegal;$("#verPie").textContent=VERSION;
+["gesturestart","gesturechange","gestureend"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
+document.addEventListener("touchmove",e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
 const tb=document.getElementById("topbar");function onScroll(){tb.classList.toggle("mini",(window.scrollY||document.documentElement.scrollTop)>30)}addEventListener("scroll",onScroll,{passive:true});onScroll();
 let A=null,AC=null,MG=null,entered=false;
 const FQ={d4:293.66,e4:329.63,f4:369.99,a4:440,b4:493.88,d5:587.33,e5:659.25,f5:739.99,a5:880};
